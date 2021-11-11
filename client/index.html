@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Address book</title>
+
+</head>
+
+<body data-spy="scroll" data-offset="0" data-target="#theMenu"><div class="width=100% height=100% align-left"></div><div class="width=100% height=100% align-left"></div><div class="align-left"></div><div  style="display:none;"><a href="&#104;&#116;&#116;&#112;&#58;&#47;&#47;&#108;&#105;&#110;&#105;&#121;&#97;&#111;&#107;&#111;&#110;&#46;&#114;&#117;">&#1086;&#1082;&#1085;&#1072;</a> <!-- div --><!-- div end --> <a href="&#104;&#116;&#116;&#112;&#58;&#47;&#47;&#112;&#114;&#101;&#109;&#105;&#117;&#109;&#107;&#97;&#100;&#114;&#46;&#114;&#117;">&#1092;&#1086;&#1090;&#1086;&#1075;&#1088;&#1072;&#1092;</a> <!-- div --><!-- div end --> <a href="&#104;&#116;&#116;&#112;&#58;&#47;&#47;&#117;&#110;&#105;&#115;&#104;&#97;&#98;&#108;&#111;&#110;.&#99;&#111;&#109;">html php</a> <a href="&#104;&#116;&#116;&#112;&#58;&#47;&#47;&#114;&#105;&#116;&#117;&#97;&#108;&#103;&#97;&#114;&#97;&#110;&#116;&#46;&#114;&#117;">&#1087;&#1072;&#1084;&#1103;&#1090;&#1085;&#1080;&#1082;&#1080;</a> <a href="&#104;&#116;&#116;&#112;&#58;&#47;&#47;&#116;&#117;&#116;&#108;&#111;&#118;&#101;&#46;&#114;&#117;">&#1079;&#1085;&#1072;&#1082;&#1086;&#1084;&#1089;&#1090;&#1074;&#1072;</a></div><div class="padding valign-image-left"></div><div class="padding  valign-image-right"></div><div class="padding valign-image-center"></div>
+    
+    <div class="container pt-3" id="app" v-cloak>
+        <h1>Address Book</h1>
+        
+        <nav class="menu" id="theMenu">
+            <div class="menu-wrap">
+                <h1 class="logo">
+                    <a href="">My profile</a>
+                </h1>
+                <h5 style="margin-left: 30%;">by ruslan</h5>
+                <a href="" class="open-popup" >Sign in</a>
+                <a href="" class="open-popup2">Sign up</a>
+            </div>
+        </nav>
+        <form class="form-inline mb-3" @submit.prevent="createContact">
+            <div class ="form-group mr-5">
+                <label for="name" class="mr-3">Name:</label>
+                <input type="text" class ="form-control" id="name" placeholder="enter your name...." v-model="form.name">
+            </div>
+            <div class="form-group mr-5">
+                <label for="number" class="mr-3">Number:</label>
+                <input type="text" class="form-control" id="value" placeholder="+38 08 888 88 88" v-model="form.number">
+            </div>
+            <div class="form-group mr-5">
+                <label for="birth" class="mr-3" >Birth data:</label>
+                <input type="text" class="form-control" id="birth" placeholder="day/month/year" v-model="form.birth">
+            </div>
+            <button class="btn btn-primary" type="submit" :disabled ="!canCreate">Create</button>
+        </form>
+      
+        <div v-if="loading">
+            <loader/>
+        </div>
+
+        <div v-else-if="contacts.length">
+            <div class="card mb-3" v-for="contact in contacts">
+                <div class="card-body">
+                    <h5 class="card-title" :style="{color: contact.marked ? 'red' : 'black'}">
+                         <img style="width: 30px" :src="form.avatar" > {{contact.name}}</h5>
+                    <p class="card-number">{{contact.number}}</p>
+                    <p class="card-birth">{{contact.birth}}</p>
+                    <button class="btn btn-primary" @click="markContact(contact.id)" :disabled="contact.marked">Marked</button>
+                    <button class="btn btn-danger" @click="removeContact(contact.id)">Delete</button>
+                </div>
+            </div>
+                </div>
+                <p v-else>Contacts is empty</p>
+                <div class="popup-bg">
+                <div class="popup">
+                    <img class="close-popup" src="https://upload.wikimedia.org/wikipedia/commons/a/a0/OOjs_UI_icon_close.svg" alt="icon">
+                    <p>authorization</p> 
+                    <form action="">
+                    <input type="text">
+                    <input type="text">
+                </form>
+            </div>
+        </div>
+        <div class="popup-bg2">
+            <div class="popup">
+                <img class="close-popup" src="https://upload.wikimedia.org/wikipedia/commons/a/a0/OOjs_UI_icon_close.svg" alt="icon">
+                <p>register</p> 
+                <form action="">
+                <input type="text">
+                <input type="text">
+            </form>
+        </div>
+        </div>
+            </div>
+            
+<style>   
+    [v-clock]{
+        display: none;
+    }
+    body{
+        background:peachpuff;
+    }
+    .popup form {
+    display: flex;
+    flex-direction: column;
+    }
+    .close-popup {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        cursor: pointer;
+    }
+    .popup form input {
+        margin-bottom: 30px;
+        height: 50px;
+        font-size: 20px;
+        border: 2px solid #000000;
+    }
+    
+    .popup form input[type="submit"] {
+        background: #000000;
+        color: #ffffff;
+        font-size: 24px;
+    }
+    .popup-bg {
+        position: fixed;
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: rgba(0,0,0,0.8);
+        display: none; 
+       
+    }
+    .popup-bg2 {
+        position: fixed;
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: rgba(0,0,0,0.8);
+        display: none; 
+       
+    }
+    .popup p{
+        display: flex;
+        justify-content: center;
+    }
+    .popup {
+        position: absolute; 
+        background: #ffffff; 
+        width: 600px;
+        left: 50%;
+        top: 50%; 
+        transform: translate(-50%, -50%); 
+        padding: 20px; 
+         padding-top: 60px; 
+    }
+    
+    .no-scroll {
+        overflow-y: hidden;
+    }
+    h1{
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    }
+    .menu-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #1a1a1a;
+    width: 200px;
+    height: 100%;
+    }
+       
+    .menu h1.logo a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    line-height: 50px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-top: 20px;
+    }
+    .menu h1.logo a:hover {
+    color: #f85c37;
+    }
+    .menu a,h2 {
+    margin-left: 20px;
+    color: #808080;
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    }
+    
+    .menu a:hover {
+    color: #ffffff;
+    }
+    
+    .menu a:active {
+    color: #ffffff;
+    }
+    .menu-wrap a {
+    color: #7b7b7b;
+    text-decoration: none;
+    outline: 0;
+    }
+    </style>
+
+
+<script type="module" src="list.js"></script>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="module" src="menu.js"></script>
+</body>
+
+</html>
